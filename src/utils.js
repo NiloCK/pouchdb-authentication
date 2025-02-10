@@ -1,6 +1,5 @@
 'use strict';
 
-import inherits from 'inherits';
 import { Headers } from 'pouchdb-fetch';
 
 
@@ -20,7 +19,7 @@ function wrapError(err) {
 // Similar to fetchJSON in pouchdb-adapter-http, but both functions are private.
 // Consider extracting them to a common library.
 function fetchJSON(dbFetch, path, options) {
-  options = options || {}
+  options = options || {};
 
   if (options.body) {
     options.body = JSON.stringify(options.body);
@@ -60,17 +59,18 @@ function toCallback(func) {
   };
 }
 
-function AuthError(message) {
-  this.status = 400;
-  this.name = 'authentication_error';
-  this.message = message;
-  this.error = true;
-  try {
-    Error.captureStackTrace(this, AuthError);
-  } catch (e) {}
-}
+class AuthError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'authentication_error';
+    this.status = 400;
+    this.error = true;
 
-inherits(AuthError, Error);
+    // This is needed because extending built-in classes like Error
+    // can have issues with the prototype chain in TypeScript/JavaScript
+    Object.setPrototypeOf(this, AuthError.prototype);
+  }
+}
 
 export {
   AuthError,
