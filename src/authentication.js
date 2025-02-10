@@ -1,7 +1,6 @@
 'use strict';
 
 import { AuthError, fetchJSON, toCallback } from './utils';
-import { assign } from 'pouchdb-utils';
 
 var sessionPath = '/_session';
 
@@ -21,7 +20,7 @@ var logIn = toCallback(function (username, password, opts) {
   }
 
   var path = sessionPath;
-  var ajaxOpts = assign({
+  var ajaxOpts = Object.assign({
     method: 'POST',
     body: {name: username, password: password},
   }, opts.ajax || {});
@@ -35,7 +34,7 @@ var logOut = toCallback(function (opts) {
   }
 
   var path = sessionPath;
-  var ajaxOpts = assign({
+  var ajaxOpts = Object.assign({
     method: 'DELETE'
   }, opts.ajax || {});
   return fetchJSON(db.fetch, path, ajaxOpts);
@@ -48,7 +47,7 @@ var getSession = toCallback(function (opts) {
   }
 
   var path = sessionPath;
-  var ajaxOpts = assign({
+  var ajaxOpts = Object.assign({
     method: 'GET'
   }, opts.ajax || {});
   return fetchJSON(db.fetch, path, ajaxOpts);

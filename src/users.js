@@ -1,7 +1,7 @@
 'use strict';
 
 import { AuthError, fetchJSON, toCallback } from './utils';
-import { assign, clone } from 'pouchdb-utils';
+import { clone } from 'pouchdb-utils';
 
 var usersPath = '/_users';
 
@@ -25,14 +25,14 @@ function updateUser(db, user, opts) {
         return Promise.reject(new AuthError('cannot use reserved word in metadata: "' + key + '"'));
       }
     }
-    user = assign(user, opts.metadata);
+    user = Object.assign(user, opts.metadata);
   }
 
   if (opts.roles) {
-    user = assign(user, {roles: opts.roles});
+    user = Object.assign(user, {roles: opts.roles});
   }
   var path = usersPath + '/' + encodeURIComponent(user._id);
-  var ajaxOpts = assign({
+  var ajaxOpts = Object.assign({
     method: 'PUT',
     body: user
   }, opts.ajax || {});
@@ -76,10 +76,10 @@ var getUser = toCallback(function (username, opts) {
   }
 
   var path = usersPath + '/' + encodeURIComponent('org.couchdb.user:' + username);
-  var ajaxOpts = assign({
+  var ajaxOpts = Object.assign({
     method: 'GET'
   }, opts.ajax || {});
-  return fetchJSON(db.fetch, path, ajaxOpts).then(x => { console.log(x); return x});
+  return fetchJSON(db.fetch, path, ajaxOpts).then(x => { console.log(x); return x;});
 });
 
 var putUser = toCallback(function (username, opts) {
@@ -111,7 +111,7 @@ var deleteUser = toCallback(function (username, opts) {
 
   return db.getUser(username, opts).then(user => {
     var path = usersPath + '/' + encodeURIComponent(user._id) + '?rev=' + user._rev;
-    var ajaxOpts = assign({
+    var ajaxOpts = Object.assign({
       method: 'DELETE'
     }, opts.ajax || {});
     return fetchJSON(db.fetch, path, ajaxOpts);
@@ -134,7 +134,7 @@ var changePassword = toCallback(function (username, password, opts) {
   return db.getUser(username, opts).then(user => {
     user.password = password;
     var path = usersPath + '/' + encodeURIComponent(user._id);
-    var ajaxOpts = assign({
+    var ajaxOpts = Object.assign({
       method: 'PUT',
       body: user,
     }, opts.ajax || {});
@@ -148,7 +148,7 @@ var changeUsername = toCallback(function (oldUsername, newUsername, opts) {
   var USERNAME_PREFIX = 'org.couchdb.user:';
   var updateUser = function (user, opts) {
     var path = usersPath + '/' + encodeURIComponent(user._id);
-    var updateOpts = assign({
+    var updateOpts = Object.assign({
       method: 'PUT',
       body: user
     }, opts.ajax);

@@ -1,6 +1,5 @@
 import { AuthError, getConfigUrl, fetchJSON, toCallback } from './utils';
 
-import { assign } from 'pouchdb-utils';
 
 var getMembership = toCallback(function (opts) {
   var db = this;
@@ -9,7 +8,7 @@ var getMembership = toCallback(function (opts) {
   }
 
   var path = '/_membership';
-  var ajaxOpts = assign({
+  var ajaxOpts = Object.assign({
     method: 'GET',
   }, opts.ajax || {});
   return fetchJSON(db.fetch, path, ajaxOpts);
@@ -49,7 +48,7 @@ var signUpAdmin = toCallback(function (username, password, opts) {
   return getNodeName(db, opts).then(nodeName => {
     var configUrl = getConfigUrl(nodeName);
     var url = (opts.configUrl || configUrl) + '/admins/' + encodeURIComponent(username);
-    var ajaxOpts = assign({
+    var ajaxOpts = Object.assign({
       method: 'PUT',
       body: password
     }, opts.ajax || {});
@@ -72,7 +71,7 @@ var deleteAdmin = toCallback(function (username, opts) {
   return getNodeName(db, opts).then(nodeName => {
     var configUrl = getConfigUrl(nodeName);
     var url = (opts.configUrl || configUrl) + '/admins/' + encodeURIComponent(username);
-    var ajaxOpts = assign({
+    var ajaxOpts = Object.assign({
       method: 'DELETE',
       processData: false
     }, opts.ajax || {});
