@@ -1,3 +1,16 @@
+# Status
+
+This is a minimal fork of the original pouchdb-authentication project.
+
+- source: github.com/pouchdb-community/pouchdb-authentication
+- package: npmjs.com/package/pouchdb-authentication
+
+The original project is no longer maintained and has a number of security vulnerabilities among its dependencies.
+
+
+Below docs are from the original:
+
+
 PouchDB Authentication
 =====
 
